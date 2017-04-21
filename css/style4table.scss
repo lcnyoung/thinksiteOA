@@ -66,6 +66,7 @@ tr{
             text-align: center;
             font-size: 14px;
             width: 100%;
+            outline: none;
 
         }
     }
@@ -92,4 +93,9 @@ tbody tr.bg td .inp{
 }
 .warn{
     color: red;
+}
+.del{
+    color: red;
+    float: right;
+    margin-top: 10px;
 }

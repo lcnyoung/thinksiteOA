@@ -1,6 +1,6 @@
 $(function(){
     
-    //database 
+    //database   数据库
     var datas = [
     	{
     		id: 3,
@@ -56,7 +56,7 @@ $(function(){
     function initHtml(json){
         var page =
             '<tr>'
-                +'<td class="id">'+'<input type="checkbox">'+json.id+'</td>'
+                +'<td class="id" title="'+json.id+'">'+'<input type="checkbox"><span>'+json.id+'</span></td>'
                 +'<td>'+'<input type="text" class="inp" value='+json.grade+' disabled>'+'</td>'
                 +'<td>'+'<input type="text" class="inp" value='+json.title+' disabled>'+'</td>'
                 +'<td>'+'<input type="text" class="inp" value='+json.class+' disabled>'+'</td>'
@@ -70,7 +70,7 @@ $(function(){
     }
     
     
-    //init page
+    //init page   渲染页面
     function initPage(data){
         $("tbody").html("");
         $.each(data,function(key,val){
@@ -80,7 +80,7 @@ $(function(){
     
     initPage(datas);
     
-    //deleta data
+    //deleta data   点击删除按钮
     
     $("body").on("click",".x",function(){
         var id = parseInt($(this).attr("title"));
@@ -93,7 +93,7 @@ $(function(){
         }
     })
     
-    //add data
+    //add data     插入数据
     var id_ = null;
     $.each(datas,function(key,val){
         if(id_　< val.id){
@@ -133,7 +133,7 @@ $(function(){
     
     
     
-    //list change
+    //list change    排序切换
     
     function order(data,status,fun){
         if(status){
@@ -161,7 +161,7 @@ $(function(){
         fun();
     }
     
-    //Arrow Switching
+    //Arrow Switching    排序箭头上下切换
     $(".arrow").on("click",function(){
         if($(this).hasClass("h")){
             $(this).html("&#xe604;");
@@ -180,26 +180,33 @@ $(function(){
         }
     });
    
-    //keyboard 
+    //keyboard     键盘操作
     $("tbody tr").eq(0).addClass("bg").siblings("tr").removeClass("bg")
     $(window).keydown(function(e){
         var key = e.keyCode
         var ind = $("tbody tr.bg").index() 
         switch(key){
-            case 38:
+            case 38: // up  上
                 if(ind > 0){
                     ind --;
                     $("tbody tr").eq(ind).addClass("bg").siblings("tr").removeClass("bg")
                 }
                 break;
-            case 40:
+            case 40:  //down  下
                 if(ind < $("tbody tr").length - 1){
                     ind ++;
                     $("tbody tr").eq(ind).addClass("bg").siblings("tr").removeClass("bg")
                 }
                 break;
-            case 46:
+            case 46:  //delete   删除
+                var id = $("tbody tr.bg").children(".id").attr("title");
+                for(var i = 0;i < datas.length; i++){
+                    if(id == datas[i].id){
+                        datas.splice(i,1);
+                    } 
+                }
                 $("tbody tr.bg").remove();
+                
                 if(ind <= $("tbody tr").length - 1){
                     $("tbody tr").eq(ind).addClass("bg")
                 } else{
@@ -207,10 +214,19 @@ $(function(){
                     $("tbody tr").eq(ind).addClass("bg")
                 }          
                 break;
+            case 13:   //enter  回车
+                ind = $("tbody tr.bg").index()
+                if($("tbody tr").eq(ind).children(".id").children("input").is(":checked")){
+                    $("tbody tr").eq(ind).children(".id").children("input").attr("checked",false)
+                } else{
+                    $("tbody tr").eq(ind).children(".id").children("input").attr("checked",true)
+                };
+                break;
+                
         }
     })
     
-    //click to change the data 
+    //click to change the data   点击表格元素变为可编辑
     $(window).on("click","td",function(){
         $(this).children(".inp").removeAttr("disabled")
     })
@@ -219,17 +235,59 @@ $(function(){
         $(this).children(".inp").attr("disabled",true)
     })
     
-    //selcet all
-    var sta = 0
-    $("#selall").on("click",function(){
-        if(sta == 0){
-            $("td input[type='checkbox']").attr("checked",true);
-            sta = 1;
+    
+    
+    
+    var sta = 0  
+    var checked = [];
+    
+    //click to push selected data to checked   点击选中行,并将选中行的id数据暂存至checked数组
+    $("td input[type='checkbox']").on("click",function(){
+        var id = parseInt($(this).siblings("span").text());
+        
+        if($(this).hasClass("cked")){
+            $.each(checked,function(key,val){
+                if(val == id){
+                    checked.splice(key,1)
+                }
+            })
+            $("#selall").removeAttr("checked").removeClass("cked");
+            $(this).removeClass("cked");
         } else{
-            $("td input[type='checkbox']").removeAttr("checked");
+            checked.push(id);
+            $(this).addClass("cked");
+            if(checked.length == $("tbody tr").length){
+                $("#selall").attr("checked",true).addClass("cked");
+            }
+        }
+    })
+    //select all     点击全选
+    $("#selall").on("click",function(){
+        if($(this).hasClass("cked")){
+            $("td input[type='checkbox']").removeClass("cked").removeAttr("checked");
+            $(this).removeClass("cked");
             sta = 0;
+        } else{
+            $("td input[type='checkbox']").addClass("cked").attr("checked",true);
+            $(this).addClass("cked");
+            sta = 1;
         }   
     })
-    
-    
+    //select to delete     点击删除选中行
+    $(".del").on("click",function(){
+        if(sta == 1){
+            $("tbody").html("");
+            datas = [];
+        } else{
+            $("td input:checked").each(function(){
+                var id = $(this).parent("td").attr("title");
+                for(var i = 0;i < datas.length; i++){
+                    if(id == datas[i].id){
+                        datas.splice(i,1)
+                    }
+                }
+            })
+            $("td input[type='checkbox']:checked").parent().parent().remove()
+        }
+    })
 })
