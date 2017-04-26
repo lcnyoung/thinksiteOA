@@ -72,27 +72,29 @@ tr{
     }
 }
 tbody tr.bg{
-    background: #1c1c1c;
+    background: #999;
     color: #fff;
 }
 tbody tr.bg td .inp{
     color: #fff;
 }
 .adddata{
-    height: 50px;
-    float: left;
+    height: auto;
+//    float: left;
     line-height: 25px;
-    margin-left: 30px;
+    margin-left: 10px;
 }
 .btn{
-    float: left;
+//    float: left;
     width: 100px;
-    height: 40px;
+    height: 25px;
     margin-top: 3px;
-    margin-left: 30px;
+    margin-left: 10px;
 }
 .warn{
     color: red;
+    font-size: 14px;
+    line-height: 20px;
 }
 .del{
     color: red;

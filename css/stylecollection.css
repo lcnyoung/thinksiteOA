@@ -1,2 +1,52 @@
-*{margin:0;padding:0}html,body{height:100%}.dlft{width:240px;background:#333333;height:100%;float:left;overflow:hidden}.drgt{width:auto;height:100%;margin-left:250px}.drgt img{width:200px;height:50px;margin:20px 20px}.sel{margin:0 20px 3px 20px;color:#ffffff;background:#666666;width:200px;line-height:40px;font-size:16px;font-family:"microsoft yahei";text-align:center;cursor:pointer}.sel:hover{background:#999999;color:#424242}iframe{height:100%;width:100%}
+@charset "UTF-8";
+/* line 1, E:/前端学习/Github/thinksiteOA/css/stylecollection.scss */
+* {
+  margin: 0;
+  padding: 0; }
+
+/* line 5, E:/前端学习/Github/thinksiteOA/css/stylecollection.scss */
+html, body {
+  height: 100%; }
+
+/* line 8, E:/前端学习/Github/thinksiteOA/css/stylecollection.scss */
+.dlft {
+  width: 240px;
+  background: #333333;
+  height: 100%;
+  float: left;
+  overflow: hidden; }
+  /* line 14, E:/前端学习/Github/thinksiteOA/css/stylecollection.scss */
+  .dlft img {
+    width: 200px;
+    height: 50px;
+    margin: 20px 20px; }
+
+/* line 21, E:/前端学习/Github/thinksiteOA/css/stylecollection.scss */
+.drgt {
+  width: auto;
+  height: 100%;
+  margin-left: 250px; }
+
+/* line 28, E:/前端学习/Github/thinksiteOA/css/stylecollection.scss */
+.sel {
+  margin: 0 20px 3px 20px;
+  color: #ffffff;
+  background: #666666;
+  width: 200px;
+  line-height: 40px;
+  font-size: 16px;
+  font-family: "microsoft yahei";
+  text-align: center;
+  cursor: pointer; }
+
+/* line 39, E:/前端学习/Github/thinksiteOA/css/stylecollection.scss */
+.sel:hover {
+  background: #999999;
+  color: #424242; }
+
+/* line 43, E:/前端学习/Github/thinksiteOA/css/stylecollection.scss */
+iframe {
+  height: 100%;
+  width: 100%; }
+
 /*# sourceMappingURL=stylecollection.css.map */

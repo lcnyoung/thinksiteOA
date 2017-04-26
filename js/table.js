@@ -6,7 +6,7 @@ $(function(){
     		id: 3,
     		grade: "第一学期",
     		title: "HTML",
-    		class: "146期",
+    		period: "146期",
     		status: "已发布",
     		creattime: "2016-11-03",
     		creater: "三日",
@@ -16,7 +16,7 @@ $(function(){
     		id: 5,
     		grade: "第一学期",
     		title: "HTML",
-    		class: "146期",
+    		period: "146期",
     		status: "已发布",
     		creattime: "2016-11-03",
     		creater: "三日",
@@ -26,7 +26,7 @@ $(function(){
     		id: 6,
     		grade: "第一学期",
     		title: "HTML",
-    		class: "146期",
+    		period: "146期",
     		status: "已发布",
     		creattime: "2016-11-03",
     		creater: "三日",
@@ -36,7 +36,7 @@ $(function(){
     		id: 7,
     		grade: "第一学期",
     		title: "HTML",
-    		class: "146期",
+    		period: "146期",
     		status: "已发布",
     		creattime: "2016-11-03",
     		creater: "三日",
@@ -46,20 +46,20 @@ $(function(){
     		id: 9,
     		grade: "第一学期",
     		title: "HTML",
-    		class: "146期",
+    		period: "146期",
     		status: "已发布",
     		creattime: "2016-11-03",
     		creater: "三日",
     		area: "南京",
     	}
     ]
-    function initHtml(json){
+    function loadHtml(json){
         var page =
             '<tr>'
                 +'<td class="id" title="'+json.id+'">'+'<input type="checkbox"><span>'+json.id+'</span></td>'
                 +'<td>'+'<input type="text" class="inp" value='+json.grade+' disabled>'+'</td>'
                 +'<td>'+'<input type="text" class="inp" value='+json.title+' disabled>'+'</td>'
-                +'<td>'+'<input type="text" class="inp" value='+json.class+' disabled>'+'</td>'
+                +'<td>'+'<input type="text" class="inp" value='+json.period+' disabled>'+'</td>'
                 +'<td>'+'<input type="text" class="inp" value='+json.status+' disabled>'+'</td>'
                 +'<td>'+'<input type="text" class="inp" value='+json.creattime+' disabled>'+'</td>'
                 +'<td>'+'<input type="text" class="inp" value='+json.creater+' disabled>'+'</td>'
@@ -70,15 +70,15 @@ $(function(){
     }
     
     
-    //init page   渲染页面
-    function initPage(data){
+    //load page   加载页面
+    function loadPage(data){
         $("tbody").html("");
         $.each(data,function(key,val){
-            $("tbody").append(initHtml(val));
+            $("tbody").append(loadHtml(val));
         })
     }
     
-    initPage(datas);
+    loadPage(datas);
     
     //deleta data   点击删除按钮
     
@@ -103,10 +103,10 @@ $(function(){
     
     function refreshHtml(data,class_){
         data.unshift({
-            id: class_.id,
+            id: id_,
             grade: $(class_.grade).val(),
             title: $(class_.title).val(),
-            class: $(class_.class).val(),
+            period: $(class_.class).val(),
             status: $(class_.status).val(),
             creattime: $(class_.creattime).val(),
             creater: $(class_.creater).val(),
@@ -115,7 +115,7 @@ $(function(){
         
         $(".adddata input[type='text']").val("");
         
-        initPage(data)
+        loadPage(data);
     }
     
     $(".btn").on("click",function(){
@@ -123,7 +123,7 @@ $(function(){
             $(".warn").html("存在未填写项,请仔细检查,确保所有信息录入完成,再次点击提交")
         } else{
             id_ = id_ + 1;
-            refreshHtml(datas,{id:id_,grade: '.grade',title: '.title',class: '.class',status: '.status',creattime: '.time',creater: '.creater',area: '.area'})
+            refreshHtml(datas,{id:id_,grade: '.grade',title: '.title',period: '.class',status: '.status',creattime: '.time',creater: '.creater',area: '.area'})
             $("tbody tr").eq(0).addClass("bg").siblings("tr").removeClass("bg")
             $(".warn").html("")
         }
@@ -143,7 +143,7 @@ $(function(){
                     if(data[i].id > data[j].id){
                         emp = data[i];
                         data[i] = data[j];
-                        data[j] = emp
+                        data[j] = emp;
                     }
                 }
             }
@@ -153,7 +153,7 @@ $(function(){
                     if(data[i].id < data[j].id){
                         emp = data[i];
                         data[i] = data[j];
-                        data[j] = emp
+                        data[j] = emp;
                     }
                 }
             }
@@ -166,17 +166,17 @@ $(function(){
         if($(this).hasClass("h")){
             $(this).html("&#xe604;");
             order(datas,true,function(){
-                initPage(datas)
+                loadPage(datas);
             })
             $(this).removeClass("h");
-            $("tbody tr").eq(0).addClass("bg").siblings("tr").removeClass("bg")
+            $("tbody tr").eq(0).addClass("bg").siblings("tr").removeClass("bg");
         } else{
             $(this).html("&#xe611;");
             order(datas,false,function(){
-                initPage(datas)
+                loadPage(datas);
             })
             $(this).addClass("h");
-            $("tbody tr").eq(0).addClass("bg").siblings("tr").removeClass("bg")
+            $("tbody tr").eq(0).addClass("bg").siblings("tr").removeClass("bg");
         }
     });
    
@@ -227,7 +227,7 @@ $(function(){
     })
     
     //click to change the data   点击表格元素变为可编辑
-    $(window).on("click","td",function(){
+    $(window).on("mousedown","td",function(){
         $(this).children(".inp").removeAttr("disabled")
     })
             
@@ -239,24 +239,16 @@ $(function(){
     
     
     var sta = 0  
-    var checked = [];
     
-    //click to push selected data to checked   点击选中行,并将选中行的id数据暂存至checked数组
     $("td input[type='checkbox']").on("click",function(){
         var id = parseInt($(this).siblings("span").text());
         
         if($(this).hasClass("cked")){
-            $.each(checked,function(key,val){
-                if(val == id){
-                    checked.splice(key,1)
-                }
-            })
             $("#selall").removeAttr("checked").removeClass("cked");
             $(this).removeClass("cked");
         } else{
-            checked.push(id);
             $(this).addClass("cked");
-            if(checked.length == $("tbody tr").length){
+            if($("tbody tr td input[type='checkbox']:checked").length == $("tbody tr").length){
                 $("#selall").attr("checked",true).addClass("cked");
             }
         }
